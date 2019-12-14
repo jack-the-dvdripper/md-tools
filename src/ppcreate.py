@@ -23,7 +23,11 @@ path
 |
 |
 |---literature
-|   |-autho.pdf
+|   |-paper1.pdf
+|   |-paper2.pdf
+|   |-bib.bibtex
+|
+|
 |--graphics
 |    |-pic001.png
 |
@@ -35,9 +39,9 @@ def create(path,configfile):
         with open(configfile,'r') as cfile:
             config=configparser.ConfigParser()
             config.read(cfile)
+    
     except:
-        print('''
-                Falling back to standard config''')
+        print('''Falling back to standard config''')
         config=configparser.ConfigParser()
         config['YAML']={
                 'title': input("Title: "),
@@ -50,17 +54,23 @@ def create(path,configfile):
                 'pagestyle' : 'plain',
                 'bibliography' : 'literature/bib.bibtex',
                 'reference-section-title' : 'Literature'}
+    
     if not os.path.isdir(path):
         os.makedirs(path)
-        #os.makedirs(literature)
-        #os.makedirs(graphics)
+            
+        if not os.path.isdir(os.path.join(path,"literature")):
+            os.makedirs(os.path.join(path,"literature"))
+            
+        if not os.path.isdir(os.path.join(path,"graphics")):
+            os.makedirs(os.path.join(path,"graphics"))
 
 
     with open(os.path.join(path,"presentation.md"),'w') as mdfile:
-        mdfile.write('---')
-        for key,val in config['YAML']:
-            mdfile.write(key + '\n' + '-' + ' ' + val)
-        mdfile.write('---')
+        mdfile.write('--- \n')
+        for key in config['YAML']:
+            mdfile.write(key + ":" + '\n') 
+            mdfile.write('-' + ' ' + config['YAML'][key] + '\n')
+        mdfile.write('--- \n')
 
 
 argumentsList = sys.argv[1:]
