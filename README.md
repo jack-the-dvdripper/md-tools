@@ -1,1 +1,8 @@
-# md-tools 
+# md-tools
+
+## requirements
+* pandoc
+* pypandoc
+* ...
+
+
